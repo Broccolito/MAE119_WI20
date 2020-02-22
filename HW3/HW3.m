@@ -256,6 +256,14 @@ legend('Trend', 'Temperature Change')
 hold off
 print(fig,'Q5.png','-dpng','-r800');
 
+slope = range(ac_sum_list) / range(it);
+% The panel temperature coefficeint remains constant
+% over different temperature ranges. The coefficient
+% is indicated by the slope of plot 5.1, which is
+% 2.7489e+04 W/degree C. This means that by one deg
+% temperature increase, the cell will tend to generate
+% 2.7489e+04 W less power a year.
+
 %% Question 6
 real_struct = load('realACPower2016.mat');
 ACPower_real = real_struct.PowerAC;
@@ -265,24 +273,37 @@ daily_AC_real = zeros(366,1);
 for i = 1:366
     daily_AC_real(i) = sum(ACPower_real(doy == i));
 end
+daily_AC_real = daily_AC_real * 28;
 
-fig = figure('units','inch','position',[5,5,12,5]);
-subplot(1,2,1)
-hold on
-plot(daily_AC_real, 'k-')
-plot(daily_AC, 'b-')
-legend('Measured AC Power Generation', 'Modeled AC Power Generation')
-title('Original')
-hold off
+% fig = figure('units','inch','position',[5,5,12,5]);
+% subplot(2,1,1)
+% hold on
+% plot(daily_AC_real, 'k-')
+% plot(daily_AC, 'b-')
+% legend('Measured AC Power Generation', 'Modeled AC Power Generation')
+% title('')
+% hold off
+% 
+% subplot(2,1,2)
+% hold on
+% plot(daily_AC_real, 'k-')
+% plot(daily_AC, 'b-')
+% legend('Measured AC Power Generation', 'Modeled AC Power Generation')
+% title('28x')
+% hold off
+% print(fig,'Q6.1.png','-dpng','-r800');
 
-subplot(1,2,2)
-hold on
-plot(daily_AC_real * 30, 'k-')
-plot(daily_AC, 'b-')
-legend('Measured AC Power Generation', 'Modeled AC Power Generation')
-title('30x')
-hold off
-print(fig,'Q6.1.png','-dpng','-r800');
+array_yield = sum(daily_AC_real./28);
+final_yield = sum(daily_AC_real);
+reference_yield = sum(daily_AC);
+panel_efficiency_measure = final_yield / (sum(AOI)*1000);
+panel_efficiency_model = reference_yield / (sum(AOI)*1000);
+% inverter_efficiency is not obtainable in real
+% measurements because there is no data on DC 
+% power output
+performance_ratio = final_yield / reference_yield;
+capacity_factor_measure = final_yield ./ (max(daily_AC_real) .* 366);
+capacity_factor_model = reference_yield ./ (max(daily_AC) .* 366);
 
 %% Done
 close all;
