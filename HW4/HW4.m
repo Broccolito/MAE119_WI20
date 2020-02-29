@@ -15,7 +15,7 @@ xlim([0,24])
 hold off
 print(fig,'Demand Vs. Time.png','-dpng','-r800');
 
-%% P1.1
+%% Q1
 
 peak_d = max(demand); % peak demand
 
@@ -92,8 +92,17 @@ Inverter = SNLInverterDB(441);
 
 Pac=pvl_snlinverter(Inverter,Vdc,Pdc);
 Pac(Pac<0)=0;
-Oct_solar_generation=sum(Pac)
+Oct_solar_generation=exsum(Pac)
 max_solarPwr=max(Pac);
 
 Solar_array_nomcap = 10^6
 Solar_arrays_req = ceil((Oct_demand/Oct_solar_generation))
+
+%% Q2
+
+demand_during_outages = sum(demand) * 20/30;
+investment_cost = demand_during_outages / 1000 * 550;
+OnM_cost = 0.012 * 1000 * demand_during_outages / 12;
+fuel_cost = demand_during_outages * 24 * 20 / 1000 * 0.10 * 3.96;
+diesel_cost = investment_cost + OnM_cost + fuel_cost
+
