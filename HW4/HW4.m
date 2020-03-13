@@ -28,7 +28,7 @@ battery_nomcap = max(btry)
 % For solar Capacity
 SurfTilt=10;
 SurfAz=180;
-TMYData=pvl_readtmy3('725905TYA.csv'); %Ukiah, CA site
+TMYData=pvl_readtmy3('725905TYA.CSV'); %Ukiah, CA site
 TimeMatlab = TMYData.DateNumber;
 Time = pvl_maketimestruct(TimeMatlab, ones(size(TimeMatlab))*TMYData.SiteTimeZone);
 dayofyear = pvl_date2doy(Time.year, Time.month, Time.day);
