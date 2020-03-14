@@ -1,3 +1,16 @@
+##### Wanjun Gu
+
+##### A13487962
+
+##### MAE 119 HW 5,6
+
+
+
+#### HW5
+
+Using the code:
+
+```matlab
 clear;
 close all;
 warning off
@@ -185,3 +198,133 @@ disp('Best Battery Capacity:  ')
 disp(best_battery);
 disp('Best Solar Panel Capacity:  ')
 disp(best_solar);
+```
+
+
+
+We are able to determine that the power generation of typital days in different months look like:
+
+![fig1](C:\Users\wanju\Desktop\MAE 119\HW6\fig1.png)
+
+And for the life cycle analysis, we are able to know that the cost vary with respect to the size of the solar panel and battery:
+
+![fig2](C:\Users\wanju\Desktop\MAE 119\HW6\fig2.png)
+
+In order to reach the maximum efficiency, the ideal battery capacity is 35 MWh and the best solar panel capacity is 80 MW. This way, the 20-year life cycle cost is around $9.579932e+09
+
+
+
+In comparison, the ad-hoc sizing suggests a 34 MWh solar panel and a 85 MWh battery, which yields a life cycle cost of $127,508,920. There are differences between the ad-hoc sizing and this calculation because for the ad-hoc analysis, we only considered October, which may on average have an AOI slightly higher than annual average.
+
+
+
+#### HW6 Q1
+
+Shown as written work
+
+
+
+#### HW6 Q2
+
+Using the code:
+
+```matlab
+clear all;
+clc;
+
+% at z=20m
+u=8;
+sd=3.7;
+
+syms c k
+
+ksim=vpasolve(sd^2==(u^2)*((gamma(1+2/k)/gamma(1+1/k)^2)-1),k);
+ksim=double(ksim);
+numc=vpasolve(u==c*gamma(1+1/ksim),c);
+numc=double(numc);
+
+k=ksim;
+c=numc;
+%Check
+[m,v]=wblstat(c,k);
+
+disp('At z = 20 m, the values of k and c are: ')
+disp(k)
+disp(c)
+
+% at z=100m
+u=6.357;
+sd=2.94;
+
+syms c k
+
+ksim=vpasolve(sd^2==(u^2)*((gamma(1+2/k)/gamma(1+1/k)^2)-1),k);
+ksim=double(ksim);
+numc=vpasolve(u==c*gamma(1+1/ksim),c);
+numc=double(numc);
+
+k=ksim;
+c=numc;
+%Check
+[m,v]=wblstat(c,k);
+
+disp('At z = 100 m, the values of k and c are: ')
+disp(k)
+disp(c)
+```
+
+Output:
+
+```
+At z = 20 m, the values of k and c are: 
+    2.2921
+
+    9.0306
+
+At z = 100 m, the values of k and c are: 
+    2.2922
+
+    7.1759
+
+```
+
+The rest of the calculation is shown on paper.
+
+
+
+#### HW6 Q3
+
+Using the code:
+
+```matlab
+clc;
+clear;
+u2=[3.2 4.5 2.9 5.2 6.1 1.5 4.2]; %z=10m
+u1=[4 5.5 3.6 6.4 7.5 1.8 5.2]; %z=30m
+
+%check alpha
+a=.16669;
+x=1:.5:max(u1);
+y = x.*3^a;
+
+%compare results from table and alpha
+fig = figure('units','inch','position',[5,5,6,5]);
+hold on
+scatter(u2,u1, 'MarkerFaceColor', 'k'); 
+plot(x,y);
+title('Wind Speeds at 10m and 30m')
+xlabel('Wind speed at 10m (m/s)')
+ylabel('Wind speed at 30m (m/s)')
+legend('Windspeed Measured', 'Windspeed Predicted')
+hold off
+print(fig,'fig3.png','-dpng','-r800');
+```
+
+We are able to plot measured windspeed and predicted windspeed:
+
+![fig3](C:\Users\wanju\Desktop\MAE 119\HW6\fig3.png)
+
+The rest of the calculation is shown on paper.
+
+
+
